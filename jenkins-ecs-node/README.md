@@ -32,3 +32,14 @@ To achieve this we'll be needing the following :
   * Amazon ECS plugin installed on Jenkins controller.
   * Credentials to access AWS resources from Jenkins or IAM assume roles.
 
+<h2>How to start? </h2>
+
+**Assuming that we already have**
+* A Jenkins server up and running.
+
+
+1. Create or Update IAM for Jenkins agent to run tasks on ECS.
+2. Create or Update security group for agent.
+3. Install Amazon ECS plugin.
+4. Configure node/cloud.
+5. Test with a job.
