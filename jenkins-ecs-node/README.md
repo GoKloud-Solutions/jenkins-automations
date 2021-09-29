@@ -209,7 +209,8 @@ Once the CASC (configuration-as-code) plugin is installed, use this <> YAML file
 Goto Manage Jenkins -> configuration-as-code -> Paste the path of jekins.yaml file. 
     This can be URL or absolute path from the server. I have copied jenkins.yaml file to my Jenkins controller to the location in the image.
 
-<<Image of applying casc>>
+   <img width="945" alt="Screenshot 2021-09-29 at 8 41 25 PM" src="https://user-images.githubusercontent.com/91467852/135297473-77a61334-113e-447c-b60f-a3edbfae808f.png">
+
 
 Once path is added, wait till it says "The configuration can be applied". If there are any errors in the yaml file then it'll show what is the error and that needs to be resolved.
 
@@ -217,15 +218,15 @@ Next, click on apply configuration.
 
 Now, if the configuration is applied successfully, you can see the cloud added under Configure Clouds section.
 
-<<Image of cloud>>
+<img width="1439" alt="Screenshot 2021-09-29 at 8 42 44 PM" src="https://user-images.githubusercontent.com/91467852/135297743-5e48927c-bf95-4ceb-83b5-103ff6e636e7.png">
+
 
 9. Test with a job.
  Congratulations, now you have configured the cloud. Now the time is to test it with a Jenkins job. I have created a pipeline job which will create a Jenkins agennt container in ECS.
 
  ```
-
-pipeline {
-    agent {
+ pipeline {
+     agent {
         ecs {
             inheritFrom 'my-ecs-agent'
         }
@@ -234,7 +235,7 @@ pipeline {
       stage('Test') {
           steps {
               script {
-                  sh "This is a test job!!"
+                  sh "echo This is a test job!!"
               }
               sh 'sleep 120'
               sh 'echo sleep is done'
@@ -243,3 +244,15 @@ pipeline {
     }
 }
  ```
+ * Jenkins job running
+    <img width="1440" alt="Screenshot 2021-09-29 at 8 47 09 PM" src="https://user-images.githubusercontent.com/91467852/135298800-7794f636-d38b-460f-af2a-b87dc669607f.png">
+ 
+ * Jenkins agent created
+   <img width="1434" alt="Screenshot 2021-09-29 at 8 46 48 PM" src="https://user-images.githubusercontent.com/91467852/135298862-6c8e925f-9b4d-4351-80a7-6479a6a7e1a4.png">
+
+
+ * ECS task running
+ 
+ <img width="1181" alt="Screenshot 2021-09-29 at 8 46 35 PM" src="https://user-images.githubusercontent.com/91467852/135298903-6f583923-23fe-4ee0-b3b9-96fdb0f82b24.png">
+
+ <img width="1160" alt="Screenshot 2021-09-29 at 8 48 39 PM" src="https://user-images.githubusercontent.com/91467852/135298943-4e91a4d4-f731-4240-8876-424749da9481.png">
