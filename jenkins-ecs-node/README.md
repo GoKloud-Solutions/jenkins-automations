@@ -166,7 +166,39 @@ Install [amazon-ecs](https://plugins.jenkins.io/amazon-ecs/) plugin to enable AW
 2. Selct Configure Clouds and 
    <img width="1438" alt="Screenshot 2021-09-29 at 7 40 37 PM" src="https://user-images.githubusercontent.com/91467852/135285762-231118aa-815c-41e6-8896-5091a8f0b042.png">
 
-3. 
+3. Add a new cloud and select Amazon EC2 Container Service Cloud.
+
+   <img width="1103" alt="Screenshot 2021-09-29 at 7 44 03 PM" src="https://user-images.githubusercontent.com/91467852/135286428-d97052d0-64c4-4747-8468-349d27d6f7c2.png">
+
+4. This will enable options to enter the following values.
+   Name: Name for your jenkins cloud agent.
+   Amazon ECS Credentials: IAM Access credentials to create Task Definitions and Tasks on the desired ECS cluster.
+   ECS Cluster: ECS cluster where the tasks will be created.
+   ECS Template: Template for ECS task definition.
+   <img width="1095" alt="Screenshot 2021-09-29 at 7 45 59 PM" src="https://user-images.githubusercontent.com/91467852/135287228-1381924b-fc14-47c8-bd25-fec15ae97d5d.png">
+
+   **Create ECS slave template**
+   Click on "Add", this will open options to define your template.
+   
+   Template name : for the task definition in ECS.
+   
+   Label: Lable name for the agent which can be referred in Jenkins jobs.
+   
+   Docker image: Docker image to launch jenkins agents.
+   
+   Filesystem root: working directory used by Jenkins (e.g. /home/jenkins/). 
+   
+   Memory: number of MiB of memory reserved for the container.
+   
+   CPU : The number of cpu units to reserve for the container. 
+   
+   Advanced Configuration
+   
+     Override entrypoint: overwritten Docker image entrypoint.
+     
+     JVM arguments: additional arguments for the JVM, such as -XX:MaxPermSize or GC options.
+     <img width="1148" alt="Screenshot 2021-09-29 at 7 58 30 PM" src="https://user-images.githubusercontent.com/91467852/135289085-b78723e6-3bef-48e7-8782-1bcfda10f1ef.png">
+
 
 
 
