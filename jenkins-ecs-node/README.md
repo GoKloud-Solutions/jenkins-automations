@@ -200,6 +200,46 @@ Install [amazon-ecs](https://plugins.jenkins.io/amazon-ecs/) plugin to enable AW
      <img width="1148" alt="Screenshot 2021-09-29 at 7 58 30 PM" src="https://user-images.githubusercontent.com/91467852/135289085-b78723e6-3bef-48e7-8782-1bcfda10f1ef.png">
 
 
+Alternative way to add a cloud node : 
 
+Install [configuration-as-code]() plugin. This will enable the configuration to be written in YAML and it will reduce the manual effort of managing jenkins. The applicability of this plugin is way beyond just configuring the node but in this article we'll be using it to configure a cloud node.
+
+Once the CASC (configuration-as-code) plugin is installed, use this <> YAML file to configure the cloud. This option will enable additional options while configuring. For example, you can select ECS task launch type, Securtiy groups, subnets etc.
+
+Goto Manage Jenkins -> configuration-as-code -> Paste the path of jekins.yaml file. 
+    This can be URL or absolute path from the server. I have copied jenkins.yaml file to my Jenkins controller to the location in the image.
+
+<<Image of applying casc>>
+
+Once path is added, wait till it says "The configuration can be applied". If there are any errors in the yaml file then it'll show what is the error and that needs to be resolved.
+
+Next, click on apply configuration.
+
+Now, if the configuration is applied successfully, you can see the cloud added under Configure Clouds section.
+
+<<Image of cloud>>
 
 9. Test with a job.
+ Congratulations, now you have configured the cloud. Now the time is to test it with a Jenkins job. I have created a pipeline job which will create a Jenkins agennt container in ECS.
+
+ ```
+
+pipeline {
+    agent {
+        ecs {
+            inheritFrom 'my-ecs-agent'
+        }
+    }
+    stages {
+      stage('Test') {
+          steps {
+              script {
+                  sh "This is a test job!!"
+              }
+              sh 'sleep 120'
+              sh 'echo sleep is done'
+          }
+      }
+    }
+}
+ ```

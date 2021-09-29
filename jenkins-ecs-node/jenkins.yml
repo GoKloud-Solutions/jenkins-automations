@@ -1,0 +1,24 @@
+jenkins:
+    clouds:
+        - ecs:
+              allowedOverrides: "inheritFrom,label,memory,cpu,image"
+              credentialsId: ""
+              cluster: arn:aws:ecs:us-east-2:1234512345:cluster/<cluster-name>
+              name: "my-ecs-agent"
+              regionName: us-east-2
+              retentionTimeout: 10
+              templates:
+                  - cpu: "512"
+                    image: "jenkins/inbound-agent"
+                    label: "my-ecs-agent"
+                    launchType: "FARGATE"
+                    memory: 0
+                    memoryReservation: 1024
+                    networkMode: "awsvpc"
+                    privileged: false
+                    remoteFSRoot: "/var/lib/jenkins"
+                    securityGroups: sg-001122334455
+                    sharedMemorySize: 0
+                    subnets: subnet-1122334455,subnet-1122334455,subnet-1122334455
+                    templateName: "my-ecs-agent"
+                    uniqueRemoteFSRoot: false
