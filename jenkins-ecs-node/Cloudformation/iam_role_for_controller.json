@@ -1,151 +1,164 @@
 {
-	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "CloudFormation template to assign a role with those permissions to the instance / container you are running the master on.",
-	"Parameters": {
-		"clusterName": {
-			"Type": "String",
-			"Description": "Name of the cluster"
-		}
-	},
-	"Resources": {
-		"TaskRole": {
-			"Type": "AWS::IAM::Role",
-			"Properties": {
-				"RoleName": {
-					"Fn::Sub": "${AWS::StackName}-task-role"
-				},
-				"Path": "/",
-				"AssumeRolePolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [{
-						"Effect": "Allow",
-						"Principal": {
-							"Service": [
-								"ecs-tasks.amazonaws.com"
-							]
-						},
-						"Action": "sts:AssumeRole"
-					}]
-				},
-				"Policies": [{
-					"PolicyName": {
-						"Fn::Sub": "ecs-${AWS::StackName}"
-					},
-					"PolicyDocument": {
-						"Version": "2012-10-17",
-						"Statement": [{
-								"Action": [
-									"ecs:RegisterTaskDefinition",
-									"ecs:ListClusters",
-									"ecs:DescribeContainerInstances",
-									"ecs:ListTaskDefinitions",
-									"ecs:DescribeTaskDefinition",
-									"ecs:DeregisterTaskDefinition"
-								],
-								"Effect": "Allow",
-								"Resource": "*"
-							},
-							{
-								"Action": [
-									"ecs:ListContainerInstances",
-									"ecs:DescribeClusters"
-								],
-								"Effect": "Allow",
-								"Resource": [{
-									"Fn::Sub": [
-										"arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${clusterName}",
-										{
-											"clusterName": {
-												"Ref": "clusterName"
-											}
-										}
-									]
-								}]
-							},
-							{
-								"Action": [
-									"ecs:RunTask"
-								],
-								"Effect": "Allow",
-								"Condition": {
-									"ArnEquals": {
-										"ecs:cluster": [{
-											"Fn::Sub": [
-												"arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${clusterName}",
-												{
-													"clusterName": {
-														"Ref": "clusterName"
-													}
-												}
-											]
-										}]
-									}
-								},
-								"Resource": {
-									"Fn::Sub": "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:task-definition/*"
-								}
-							},
-							{
-								"Action": [
-									"ecs:StopTask"
-								],
-								"Effect": "Allow",
-								"Condition": {
-									"ArnEquals": {
-										"ecs:cluster": [{
-											"Fn::Sub": [
-												"arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${clusterName}",
-												{
-													"clusterName": {
-														"Ref": "clusterName"
-													}
-												}
-											]
-										}]
-									}
-								},
-								"Resource": {
-									"Fn::Sub": "arn:aws:ecs:*:*:task/*"
-								}
-							},
-							{
-								"Action": [
-									"ecs:DescribeTasks"
-								],
-								"Effect": "Allow",
-								"Condition": {
-									"ArnEquals": {
-										"ecs:cluster": [{
-											"Fn::Sub": [
-												"arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${clusterName}",
-												{
-													"clusterName": {
-														"Ref": "clusterName"
-													}
-												}
-											]
-										}]
-									}
-								},
-								"Resource": {
-									"Fn::Sub": "arn:aws:ecs:*:*:task/*"
-								}
-							},
-							{
-								"Sid": "",
-								"Effect": "Allow",
-								"Action": [
-									"ecr:GetDownloadUrlForLayer",
-									"ecr:GetAuthorizationToken",
-									"ecr:BatchGetImage",
-									"ecr:BatchCheckLayerAvailability"
-								],
-								"Resource": "*"
-							}
-						]
-					}
-				}]
-			}
-		}
-	}
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "CloudFormation template to assign a role with those permissions to the instance / container you are running the master on.",
+    "Parameters": {
+        "clusterName": {
+            "Type": "String",
+            "Description": "Name of the cluster"
+        }
+    },
+    "Resources": {
+        "TaskRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::Sub": "${AWS::StackName}-task-role"
+                },
+                "Path": "/",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "ecs-tasks.amazonaws.com"
+                                ]
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": {
+                            "Fn::Sub": "ecs-${AWS::StackName}"
+                        },
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "ecs:RegisterTaskDefinition",
+                                        "ecs:ListClusters",
+                                        "ecs:DescribeContainerInstances",
+                                        "ecs:ListTaskDefinitions",
+                                        "ecs:DescribeTaskDefinition",
+                                        "ecs:DeregisterTaskDefinition"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Resource": "*"
+                                },
+                                {
+                                    "Action": [
+                                        "ecs:ListContainerInstances",
+                                        "ecs:DescribeClusters"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Resource": [
+                                        {
+                                            "Fn::Sub": [
+                                                "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${clusterName}",
+                                                {
+                                                    "clusterName": {
+                                                        "Ref": "clusterName"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Action": [
+                                        "ecs:RunTask"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Condition": {
+                                        "ArnEquals": {
+                                            "ecs:cluster": [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${clusterName}",
+                                                        {
+                                                            "clusterName": {
+                                                                "Ref": "clusterName"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "Resource": {
+                                        "Fn::Sub": "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:task-definition/*"
+                                    }
+                                },
+                                {
+                                    "Action": [
+                                        "ecs:StopTask"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Condition": {
+                                        "ArnEquals": {
+                                            "ecs:cluster": [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${clusterName}",
+                                                        {
+                                                            "clusterName": {
+                                                                "Ref": "clusterName"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "Resource": {
+                                        "Fn::Sub": "arn:aws:ecs:*:*:task/*"
+                                    }
+                                },
+                                {
+                                    "Action": [
+                                        "ecs:DescribeTasks"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Condition": {
+                                        "ArnEquals": {
+                                            "ecs:cluster": [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${clusterName}",
+                                                        {
+                                                            "clusterName": {
+                                                                "Ref": "clusterName"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "Resource": {
+                                        "Fn::Sub": "arn:aws:ecs:*:*:task/*"
+                                    }
+                                },
+                                {
+                                    "Sid": "",
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "ecr:GetDownloadUrlForLayer",
+                                        "ecr:GetAuthorizationToken",
+                                        "ecr:BatchGetImage",
+                                        "ecr:BatchCheckLayerAvailability"
+                                    ],
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
 }
