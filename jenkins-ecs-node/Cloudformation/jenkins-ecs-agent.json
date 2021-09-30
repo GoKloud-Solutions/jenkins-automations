@@ -1,0 +1,107 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "CloudFormation template to provision Jenkins agent ECS cluster.",
+	"Parameters": {
+		"CapacityProviders": {
+			"Type": "String",
+			"AllowedValues": [
+				"FARGATE",
+				"FARGATE_SPOT"
+			],
+			"Description": "AWS Fargate capacity provider, specify either the FARGATE or FARGATE_SPOT capacity providers"
+		},
+		"VpcId": {
+			"Type": "AWS::EC2::VPC::Id",
+			"Description": "Select a VPC where the security group to be created."
+		},
+		"ControllerSG": {
+			"Type": "String",
+			"Description": "Please enter Security Group ID of Jenkins controller to allow traffic to agent containers"
+		},
+		"Application": {
+			"Type": "String",
+			"Default": "Jenkins",
+			"Description": "Name of the application provisioned"
+		}
+	},
+	"Resources": {
+		"ECSCluster": {
+			"Type": "AWS::ECS::Cluster",
+			"Properties": {
+				"ClusterName": {
+					"Fn::Join": [
+						"-",
+						[{
+								"Ref": "Application"
+							},
+							"agent-cluster"
+						]
+					]
+				},
+				"CapacityProviders": [{
+					"Ref": "CapacityProviders"
+				}],
+				"Tags": [{
+					"Key": "Name",
+					"Value": {
+						"Fn::Join": [
+							"-",
+							[{
+									"Ref": "Application"
+								},
+								"agent-cluster"
+							]
+						]
+					}
+				}]
+			}
+		},
+		"EcsSecurityGroup": {
+			"Type": "AWS::EC2::SecurityGroup",
+			"Properties": {
+				"GroupDescription": "ECS Security Group for Tasks",
+				"VpcId": {
+					"Ref": "VpcId"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": {
+						"Fn::Join": [
+							"-",
+							[{
+									"Ref": "Application"
+								},
+								"ecs-task-sg"
+							]
+						]
+					}
+				}]
+			}
+		},
+		"EcsSecurityGroupinbound": {
+			"Type": "AWS::EC2::SecurityGroupIngress",
+			"Properties": {
+				"GroupId": {
+					"Ref": "EcsSecurityGroup"
+				},
+				"IpProtocol": "tcp",
+				"FromPort": 5000,
+				"ToPort": 5000,
+				"SourceSecurityGroupId": {
+					"Ref": "ControllerSG"
+				},
+                "Description": "TCP listen port for agents from the Jenkins master"
+			}
+		}
+	},
+    "Outputs" : {
+        "ECSClusterName" : {
+          "Description": "Name of the ECS Cluster",  
+          "Value" : { "Ref": "ECSCluster" }
+        },
+        "EcsSecurityGroupID" : {
+          "Description": "Security Group to be attached to ECS Tasks",  
+          "Value" : { "Fn::GetAtt" : [ "EcsSecurityGroup", "GroupId" ]}
+        }
+      }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "ParameterKey": "VpcId",
+    "ParameterValue": "vpc-1234567890"
+  },
+  {
+    "ParameterKey": "CapacityProviders",
+    "ParameterValue": "FARGATE"
+  },
+  {
+    "ParameterKey": "Application",
+    "ParameterValue": "Jenkins"
+  },
+  {
+    "ParameterKey": "ControllerSG",
+    "ParameterValue": "sg-1234567890"
+  }
+]
