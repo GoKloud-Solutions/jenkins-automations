@@ -1,6 +1,6 @@
 {
 	"AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "CloudFormation template to assign a role with those permissions to the instance / container you are running the master on.",
+	"Description": "CloudFormation template to assign a role with those permissions to the instance / container you are running the master on.",
 	"Parameters": {
 		"clusterName": {
 			"Type": "String",

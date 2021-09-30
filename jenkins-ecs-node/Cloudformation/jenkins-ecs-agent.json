@@ -90,18 +90,22 @@
 				"SourceSecurityGroupId": {
 					"Ref": "ControllerSG"
 				},
-                "Description": "TCP listen port for agents from the Jenkins master"
+				"Description": "TCP listen port for agents from the Jenkins master"
 			}
 		}
 	},
-    "Outputs" : {
-        "ECSClusterName" : {
-          "Description": "Name of the ECS Cluster",  
-          "Value" : { "Ref": "ECSCluster" }
-        },
-        "EcsSecurityGroupID" : {
-          "Description": "Security Group to be attached to ECS Tasks",  
-          "Value" : { "Fn::GetAtt" : [ "EcsSecurityGroup", "GroupId" ]}
-        }
-      }
+	"Outputs": {
+		"ECSClusterName": {
+			"Description": "Name of the ECS Cluster",
+			"Value": {
+				"Ref": "ECSCluster"
+			}
+		},
+		"EcsSecurityGroupID": {
+			"Description": "Security Group to be attached to ECS Tasks",
+			"Value": {
+				"Fn::GetAtt": ["EcsSecurityGroup", "GroupId"]
+			}
+		}
+	}
 }
