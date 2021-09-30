@@ -144,16 +144,17 @@ TCP | 5000 | Jenkins-controller-sg
 TCP | 5000 | Jenkins-alb-sg (if any)
 
 <h3>Install ECS plugin</h3>
-Install [amazon-ecs-plugin](https://plugins.jenkins.io/amazon-ecs/)to enable AWS ECS as cloud node. This will enable us to add ECS containers as Jenkins agents.
+
+Install [amazon-ecs-plugin](https://plugins.jenkins.io/amazon-ecs/) to enable AWS ECS as cloud node. This will enable us to add ECS containers as Jenkins agents.
 
 <h3>Jenkins configurations</h3>
 
 **Enable TCP port for inbound agents**
 
-TCP port for inbound agents. Fix the TCP listen port for JNLP agents of the Jenkins master (e.g. 5000) navigating in the "Manage Jenkins / Configure Global Security" screen Allow TCP traffic from the ECS cluster container instances to the Jenkins master on the listen port for JNLP agents.
+TCP port for inbound agents. Fix the TCP listen port for JNLP agents of the Jenkins master (e.g. ```5000```) navigating in the "**Manage Jenkins / Configure Global Security**" screen Allow TCP traffic from the ECS cluster container instances to the Jenkins master on the listen port for JNLP agents.
 <img width="1092" alt="Screenshot 2021-09-29 at 7 22 40 PM" src="https://user-images.githubusercontent.com/91467852/135423608-2436a759-b8fe-4471-8362-b29c1e30db20.png">
 
-Jenkins URL must be reachanble from agent container. Goto Manage Jenkins -> Configure System -> Jenkins Location -> Jenkins URL
+Jenkins URL must be reachanble from agent container. Goto ```Manage Jenkins -> Configure System -> Jenkins Location -> Jenkins URL```
 <img width="1095" alt="Screenshot 2021-09-29 at 7 35 39 PM" src="https://user-images.githubusercontent.com/91467852/135423687-c4f25c53-2ea9-4325-9dc4-521c23d51af0.png">
 
 If the global Jenkins URL configuration does not fit your needs (e.g. if your ECS agents must reach Jenkins through some kind of tunnel) you can also override the Jenkins URL in the Advanced Configuration of the ECS cloud.
@@ -214,8 +215,9 @@ JVM arguments | additional arguments for the JVM, such as -XX:MaxPermSize or GC 
 
 <img width="1148" alt="135289085-b78723e6-3bef-48e7-8782-1bcfda10f1ef" src="https://user-images.githubusercontent.com/91467852/135427326-71b933f1-edb6-47ba-9dcb-2c52e8b57b1e.png">
 
-```For docker image to act as a Jenkins JNLP agent, can use this one. [jenkins/inbound-agent](https://hub.docker.com/r/jenkins/inbound-agent/)```
-We can also copy this docker image to ECR and use to lauch ECS agent containers or buid image of our own.
+```For docker image to act as a Jenkins JNLP agent, can use this one```[jenkins/inbound-agent](https://hub.docker.com/r/jenkins/inbound-agent/)
+
+*We can also copy this docker image to ECR and use to lauch ECS agent containers or buid image of our own.*
 
 
 #### Using configuration-as-code
@@ -228,7 +230,7 @@ Goto Manage Jenkins -> configuration-as-code -> Paste the path of jekins.yml fil
   - This can be URL where the YAML file is stored (must be public or Jenkins controller must have access to this file)
   - Absolute path from the server where the YAML file is located (Jenkins controller must have read permission to the file). 
  
-In this example, I'll be using raw URL of jenkins.yml file located here. [jenkins.yml](https://github.com/GoKloud-Solutions/jenkins-automations/blob/feature-setup/jenkins-ecs-node/configuraition-as-code/jenkins.yml)
+In this example, I'll be using raw URL of jenkins.yml file located here [jenkins.yml](https://github.com/GoKloud-Solutions/jenkins-automations/blob/feature-setup/jenkins-ecs-node/configuraition-as-code/jenkins.yml)
 
  <img width="1171" alt="Screenshot 2021-09-30 at 3 11 14 PM" src="https://user-images.githubusercontent.com/91467852/135428597-eb8148c2-77c4-4e18-be04-153c5deedc81.png">
 
@@ -267,7 +269,7 @@ pipeline {
 
 #### Example 2 : Declatative pipeline with "inheritFrom"
 
-"inheritFrom" You can also reuse pre-configured templates and override certain settings using inheritFrom to reference the Label field of the template that you want to use as preconfigured. Only one label is expected to be specified.
+***"inheritFrom"*** You can also reuse pre-configured templates and override certain settings using inheritFrom to reference the Label field of the template that you want to use as preconfigured. Only one label is expected to be specified.
 
 When using inheritFrom, the label will not copied. Instead, a new label will be generated based on the following schema {job-name}-{job-run-number}-{5-random-chars} e.g. "pylint-543-b4f42". This guarantees that there will not be conflicts with the parent template or other runs of the same job, as well as making it easier to identify the labels in Jenkins.
 
