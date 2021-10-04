@@ -12,7 +12,7 @@ variable "spotEnabled" {
   default = true
 }
 variable "tags" {
-    type = map
-    description = "Default tags to be applied to every resource"
-  
+  type        = map(any)
+  description = "Default tags to be applied to every resource"
+
 }

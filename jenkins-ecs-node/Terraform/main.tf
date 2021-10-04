@@ -1,6 +1,6 @@
 module "ECS" {
-  source = "./ECS"
-  region = var.region
+  source         = "./ECS"
+  region         = var.region
   vpcId          = var.vpcId
   ecsClusterName = var.ecsClusterName
   spotEnabled    = var.spotEnabled
