@@ -1,0 +1,5 @@
+jenkins-ecs-node/Terraform/.terraform.lock.hcl
+jenkins-ecs-node/Terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/3.61.0/darwin_arm64/terraform-provider-aws_v3.61.0_x5
+jenkins-ecs-node/Terraform/terraform.tfstate.backup
+jenkins-ecs-node/Terraform/terraform.tfstate
+jenkins-ecs-node/Terraform/.terraform/modules/modules.json
