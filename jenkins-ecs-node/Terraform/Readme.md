@@ -1,6 +1,7 @@
 This Terraform script will be creating a Cluster for the salve ECS and also will create a SG that can be used to only Allow JNLP connection 
 One just need to run the following commands and the Infra will be created on the AWS account
 
+Firstly One needs to update values in the values.tfvars file like vpcID, SecurityGroup of controller , desired cluter name and also the tags that should be applied on every resource
 ## Terraform commands for creating the infra
 This command initializes the aws module.
 ```bash

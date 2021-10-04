@@ -3,3 +3,4 @@ jenkins-ecs-node/Terraform/.terraform/providers/registry.terraform.io/hashicorp/
 jenkins-ecs-node/Terraform/terraform.tfstate.backup
 jenkins-ecs-node/Terraform/terraform.tfstate
 jenkins-ecs-node/Terraform/.terraform/modules/modules.json
+jenkins-ecs-node/Terraform/.terraform.tfstate.lock.info
